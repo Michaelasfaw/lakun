@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lakun User Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf7f2;
+    --surface: #ffffff;
+    --surface-2: #f4efe7;
+    --ink: #1c1917;
+    --ink-2: #57534e;
+    --ink-3: #8a8178;
+    --line: #e9e2d8;
+    --brand: #f08a0c;
+    --brand-ink: #b45f00;
+    --brand-soft: #fff1dc;
+    --customer: #0284c7; --customer-soft: #e0f2fe;
+    --vendor:   #d97706; --vendor-soft:   #fef3c7;
+    --admin:    #7c3aed; --admin-soft:    #ede9fe;
+    --rider:    #059669; --rider-soft:    #d1fae5;
+    --danger:   #dc2626; --danger-soft:   #fee2e2;
+    --frame: #1c1917;
+    --shadow: 0 1px 2px rgba(28,25,23,.06), 0 8px 24px rgba(28,25,23,.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12100e; --surface: #1c1a17; --surface-2: #24211d; --ink: #f5f2ed; --ink-2: #c4bdb3; --ink-3: #8f877c;
+      --line: #2f2b26; --brand-soft: #3a2608; --brand-ink: #fbb04a;
+      --customer: #38bdf8; --customer-soft: #0c2a3b; --vendor: #fbbf24; --vendor-soft: #3a2a07;
+      --admin: #a78bfa; --admin-soft: #2a1f47; --rider: #34d399; --rider-soft: #0b3327;
+      --danger: #f87171; --danger-soft: #3b1414; --frame: #000; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12100e; --surface: #1c1a17; --surface-2: #24211d; --ink: #f5f2ed; --ink-2: #c4bdb3; --ink-3: #8f877c;
+    --line: #2f2b26; --brand-soft: #3a2608; --brand-ink: #fbb04a;
+    --customer: #38bdf8; --customer-soft: #0c2a3b; --vendor: #fbbf24; --vendor-soft: #3a2a07;
+    --admin: #a78bfa; --admin-soft: #2a1f47; --rider: #34d399; --rider-soft: #0b3327;
+    --danger: #f87171; --danger-soft: #3b1414; --frame: #000; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.6 "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  img { display: block; max-width: 100%; }
+  code { font: 12.5px/1.4 ui-monospace, "Cascadia Code", Consolas, monospace; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  header.top .wrap { display: flex; align-items: center; gap: 16px; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; }
+  .logo span.mark { width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(135deg, #fbb04a, var(--brand)); display: grid; place-items: center; color: #fff; }
+  nav.jump { display: flex; gap: 4px; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+  nav.jump a { color: var(--ink-2); text-decoration: none; font-weight: 600; font-size: 13px; padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+  nav.jump a:hover { background: var(--surface-2); color: var(--ink); }
+  .theme-btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; display: grid; place-items: center; flex: none; }
+
+  /* Hero */
+  .hero { padding: 56px 0 32px; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--brand-ink); }
+  h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.1; letter-spacing: -.02em; margin: 10px 0 14px; font-weight: 800; }
+  .lede { font-size: 17px; color: var(--ink-2); max-width: 720px; margin: 0; }
+  .roles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 32px; }
+  .role-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); }
+  .role-card .ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; margin-bottom: 10px; }
+  .role-card b { display: block; font-size: 15px; }
+  .role-card p { margin: 2px 0 0; font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+  .role-card .login { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
+
+  /* Sections */
+  section { padding: 40px 0; }
+  h2 { font-size: 26px; letter-spacing: -.01em; margin: 6px 0 8px; font-weight: 800; }
+  .sub { color: var(--ink-2); margin: 0 0 24px; max-width: 760px; }
+
+  /* Lifecycle strip */
+  .lifecycle { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; box-shadow: var(--shadow); }
+  .lc-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 4px; }
+  .lc-step { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2); min-width: 128px; text-decoration: none; color: inherit; }
+  .lc-step:hover { border-color: var(--brand); }
+  .lc-step .st { font: 600 12px/1.3 ui-monospace, Consolas, monospace; color: var(--ink); }
+  .lc-arrow { color: var(--ink-3); font-size: 16px; padding: 0 2px; }
+  .lc-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); font-size: 13px; color: var(--ink-2); }
+  .lc-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .exceptions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+  .exc { border: 1px solid var(--line); border-left: 3px solid var(--danger); border-radius: 12px; padding: 12px 14px; background: var(--surface); font-size: 13.5px; color: var(--ink-2); }
+  .exc b { color: var(--ink); display: block; font-size: 14px; margin-bottom: 2px; }
+
+  /* Badges */
+  .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+  .b-customer { color: var(--customer); background: var(--customer-soft); }
+  .b-vendor { color: var(--vendor); background: var(--vendor-soft); }
+  .b-admin { color: var(--admin); background: var(--admin-soft); }
+  .b-rider { color: var(--rider); background: var(--rider-soft); }
+  .b-all { color: var(--brand-ink); background: var(--brand-soft); }
+  .status { font: 600 11.5px/1 ui-monospace, Consolas, monospace; padding: 5px 8px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink); white-space: nowrap; }
+  .status.bad { color: var(--danger); background: var(--danger-soft); border-color: transparent; }
+
+  /* Filters */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .filters button { font: inherit; font-size: 13px; font-weight: 600; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); padding: 7px 14px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; }
+  .filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  /* Steps */
+  .steps { position: relative; display: flex; flex-direction: column; gap: 20px; }
+  .step { display: grid; grid-template-columns: 56px 1fr; gap: 0 20px; }
+  .step[hidden] { display: none; }
+  .rail { display: flex; flex-direction: column; align-items: center; }
+  .num { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-weight: 800; font-size: 16px; color: #fff; flex: none; }
+  .rail::after { content: ""; flex: 1; width: 2px; margin-top: 8px; background: repeating-linear-gradient(var(--line) 0 6px, transparent 6px 12px); }
+  .step:last-child .rail::after { display: none; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; box-shadow: var(--shadow); min-width: 0; }
+  .card-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .card h3 { font-size: 19px; margin: 0; font-weight: 700; letter-spacing: -.01em; }
+  .card .desc { color: var(--ink-2); margin: 6px 0 12px; }
+  .card ul { margin: 0 0 14px; padding-left: 18px; color: var(--ink-2); font-size: 14px; }
+  .card ul li { margin: 3px 0; }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 12.5px; color: var(--ink-3); margin-bottom: 18px; }
+  .meta .trans { display: inline-flex; align-items: center; gap: 6px; }
+  .meta code { color: var(--ink-2); }
+
+  /* Screens */
+  .shots { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start; }
+  figure { margin: 0; }
+  figcaption { font-size: 12.5px; color: var(--ink-2); margin-top: 8px; text-align: center; font-weight: 600; }
+  figcaption small { display: block; color: var(--ink-3); font-weight: 500; font-family: ui-monospace, Consolas, monospace; font-size: 11px; }
+  .phone { width: 220px; border-radius: 30px; padding: 7px; background: var(--frame); box-shadow: var(--shadow); cursor: zoom-in; transition: transform .15s ease; }
+  .phone img { border-radius: 24px; aspect-ratio: 390 / 844; object-fit: cover; width: 100%; background: var(--surface-2); }
+  .browser { width: 100%; max-width: 640px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--surface-2); box-shadow: var(--shadow); cursor: zoom-in; transition: transform .15s ease; }
+  .browser .bar { height: 26px; display: flex; align-items: center; gap: 6px; padding: 0 10px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+  .browser .bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+  .browser img { aspect-ratio: 1440 / 900; object-fit: cover; width: 100%; }
+  .phone:hover, .browser:hover { transform: translateY(-3px); }
+  .shots.desktop-2 { display: grid; grid-template-columns: 1fr 1fr; }
+  .shots.desktop-2 .browser { max-width: none; }
+
+  /* Gallery */
+  .gallery-group { margin-bottom: 36px; }
+  .gallery-group h3 { display: flex; align-items: center; gap: 10px; font-size: 17px; margin: 0 0 14px; }
+  .grid-phones { display: flex; flex-wrap: wrap; gap: 18px; }
+  .grid-desk { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .grid-desk .browser { max-width: none; }
+
+  footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--ink-3); font-size: 13px; }
+
+  /* Lightbox */
+  .lb { position: fixed; inset: 0; z-index: 50; background: rgba(10,8,6,.88); display: none; align-items: center; justify-content: center; padding: 56px 64px 72px; }
+  .lb.open { display: flex; }
+  .lb img { max-width: 100%; max-height: 100%; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  .lb .cap { position: absolute; bottom: 22px; left: 0; right: 0; text-align: center; color: #f5f2ed; font-size: 14px; font-weight: 600; }
+  .lb button { position: absolute; background: rgba(255,255,255,.12); color: #fff; border: 0; width: 44px; height: 44px; border-radius: 12px; cursor: pointer; font-size: 20px; }
+  .lb button:hover { background: rgba(255,255,255,.22); }
+  .lb .close { top: 14px; right: 14px; }
+  .lb .prev { left: 14px; top: 50%; transform: translateY(-50%); }
+  .lb .next { right: 14px; top: 50%; transform: translateY(-50%); }
+
+  @media (max-width: 900px) {
+    .roles { grid-template-columns: repeat(2, 1fr); }
+    .exceptions { grid-template-columns: 1fr; }
+    .grid-desk, .shots.desktop-2 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .wrap { padding: 0 16px; }
+    nav.jump { display: none; }
+    .theme-btn { margin-left: auto; }
+    .roles { grid-template-columns: 1fr; }
+    .step { grid-template-columns: 1fr; }
+    .rail { flex-direction: row; gap: 10px; margin-bottom: 10px; }
+    .rail::after { display: none; }
+    .card { padding: 16px; }
+    .phone { width: calc(50% - 9px); border-radius: 22px; padding: 5px; }
+    .phone img { border-radius: 18px; }
+    .lifecycle { padding: 16px; }
+    .lc-step { min-width: 0; }
+    .lb { padding: 56px 8px 72px; }
+    .lb .prev, .lb .next { top: auto; bottom: 12px; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="logo"><span class="mark">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </span>Lakun · User Flow</div>
+    <nav class="jump" aria-label="Sections">
+      <a href="#lifecycle">Lifecycle</a>
+      <a href="#journey">Order journey</a>
+      <a href="#onboarding">Onboarding</a>
+      <a href="#screens">Role screens</a>
+    </nav>
+    <button class="theme-btn" id="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Product walkthrough</div>
+    <h1>How an order moves through Lakun</h1>
+    <p class="lede">A customer in an apartment building lists what they need. Nearby shops bid a price, the customer picks one and pays by bank transfer or Telebirr, operations verify the payment and pay the shop, and a rider brings the items to the door. Four roles, one shared order record.</p>
+
+    <div class="roles">
+      <div class="role-card">
+        <div class="ic b-customer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+        <b>Customer</b><p>Requests items, compares shop prices, pays, tracks the delivery and confirms receipt.</p>
+        <div class="login">Demo: 08011111111</div>
+      </div>
+      <div class="role-card">
+        <div class="ic b-vendor"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg></div>
+        <b>Vendor (shop)</b><p>Sees requests in range, submits a price before the window closes, approves pickup when packed.</p>
+        <div class="login">Demo: 08055555555</div>
+      </div>
+      <div class="role-card">
+        <div class="ic b-admin"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <b>Admin (operations)</b><p>Forwards bids, verifies payment proof, pays the vendor, assigns riders, manages the platform.</p>
+        <div class="login">Demo: 08000000000</div>
+      </div>
+      <div class="role-card">
+        <div class="ic b-rider"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 7.5M5.5 17.5 9 10h6l3.5 7.5M9 10 7.5 6H5"/></svg></div>
+        <b>Delivery rider</b><p>Buys task credits, receives assignments, picks up from the shop and delivers to the door.</p>
+        <div class="login">Demo: 08088888888</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ LIFECYCLE ═══════════════ -->
+  <section id="lifecycle">
+    <div class="eyebrow">Order status</div>
+    <h2>Status lifecycle</h2>
+    <p class="sub">Every screen reads and writes the same <code>orders.status</code> field. The colour of each stage shows who moves the order forward. Click a stage to jump to its step.</p>
+
+    <div class="lifecycle">
+      <div class="lc-row" id="lc-row"></div>
+      <div class="lc-legend">
+        <span><i class="dot" style="background:var(--customer)"></i>Customer action</span>
+        <span><i class="dot" style="background:var(--vendor)"></i>Vendor action</span>
+        <span><i class="dot" style="background:var(--admin)"></i>Admin action</span>
+        <span><i class="dot" style="background:var(--rider)"></i>Rider action</span>
+      </div>
+    </div>
+
+    <div class="exceptions">
+      <div class="exc"><b>No bids in the window</b>The order ends as <span class="status bad">cancelled</span>. Admin can re-open bidding from the orders board, which puts it back into <span class="status">bidding</span>.</div>
+      <div class="exc"><b>Payment proof rejected</b>Admin rejects the screenshot or transaction ID, and the order moves to <span class="status bad">failed_payment</span>. The customer is notified.</div>
+      <div class="exc"><b>Rider has no credits</b>Each assignment costs 1 credit, so a rider with 0 can't be assigned. They top up from a credit package on <em>My credits</em>.</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ JOURNEY ═══════════════ -->
+  <section id="journey">
+    <div class="eyebrow">End to end</div>
+    <h2>The order journey, step by step</h2>
+    <p class="sub">Screens captured from the running app (localhost:8091) with the demo accounts. Phone frames are the mobile layout (390 × 844); browser frames are the admin console (1440 × 900). Click any screen to enlarge it.</p>
+
+    <div class="filters" role="group" aria-label="Filter steps by role">
+      <button data-filter="all" aria-pressed="true">All roles</button>
+      <button data-filter="customer" aria-pressed="false"><i class="dot" style="background:var(--customer)"></i>Customer</button>
+      <button data-filter="vendor" aria-pressed="false"><i class="dot" style="background:var(--vendor)"></i>Vendor</button>
+      <button data-filter="admin" aria-pressed="false"><i class="dot" style="background:var(--admin)"></i>Admin</button>
+      <button data-filter="rider" aria-pressed="false"><i class="dot" style="background:var(--rider)"></i>Rider</button>
+    </div>
+
+    <div class="steps" id="steps"></div>
+  </section>
+
+  <!-- ═══════════════ ONBOARDING ═══════════════ -->
+  <section id="onboarding">
+    <div class="eyebrow">Before the first order</div>
+    <h2>Onboarding</h2>
+    <p class="sub">One sign-in screen for every role (phone number and password), with role-specific sign-up. Customers pick their building, block, floor and house number. Vendors pick their shop's building and the buildings they serve. Riders pick the buildings they cover.</p>
+    <div class="grid-phones" id="onboarding-grid"></div>
+  </section>
+
+  <!-- ═══════════════ ROLE SCREENS ═══════════════ -->
+  <section id="screens">
+    <div class="eyebrow">Supporting screens</div>
+    <h2>Everything else each role sees</h2>
+    <p class="sub">Screens that sit around the main journey: history, money, and platform configuration.</p>
+    <div id="gallery"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">Lakun · Screenshots in <code>screenshot/</code>, captured 20 Oct 2026 from the local build with demo data.</div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Screenshot preview">
+  <button class="close" aria-label="Close">✕</button>
+  <button class="prev" aria-label="Previous">‹</button>
+  <img alt="">
+  <button class="next" aria-label="Next">›</button>
+  <div class="cap"></div>
+</div>
+
+<script>
+const ROLE = {
+  customer: { label: 'Customer', color: 'var(--customer)' },
+  vendor:   { label: 'Vendor',   color: 'var(--vendor)' },
+  admin:    { label: 'Admin',    color: 'var(--admin)' },
+  rider:    { label: 'Rider',    color: 'var(--rider)' },
+  all:      { label: 'Everyone', color: 'var(--brand)' },
+};
+
+// Lifecycle stages → which step moves the order into that status
+const LIFECYCLE = [
+  { st: 'bidding',              role: 'customer', step: 3 },
+  { st: 'sent_to_customer',     role: 'admin',    step: 5 },
+  { st: 'awaiting_payment',     role: 'customer', step: 6 },
+  { st: 'payment_under_review', role: 'customer', step: 7 },
+  { st: 'confirmed',            role: 'admin',    step: 8 },
+  { st: 'vendor_paid',          role: 'admin',    step: 9 },
+  { st: 'assigned',             role: 'admin',    step: 10 },
+  { st: 'picked_up',            role: 'rider',    step: 12 },
+  { st: 'out_for_delivery',     role: 'rider',    step: 12 },
+  { st: 'delivered',            role: 'rider',    step: 12 },
+  { st: 'completed',            role: 'customer', step: 13 },
+];
+
+const STEPS = [
+  { role: 'all', title: 'Sign in',
+    desc: 'Everyone signs in with phone number and password. The app sends each role to its own home screen: customers to Home, vendors to Orders, riders to My deliveries, admins to the console.',
+    shots: [['01-login', 'Sign in', '/login']] },
+
+  { role: 'customer', title: 'Land on Home and find nearby shops',
+    desc: 'Home greets the customer, shows active orders and anything waiting on them, and offers category shortcuts (Groceries, Pharmacy, Food, Household). Nearby shops lists vendors that can serve the customer\'s building, matched by GPS.',
+    shots: [['10-customer-dashboard', 'Home', '/customer/dashboard'], ['11-customer-nearby-shops', 'Nearby shops', '/customer/nearby']] },
+
+  { role: 'customer', title: 'Create an order request',
+    desc: 'The customer picks a category and lists items (name, brand, quantity), using quick-add chips for common items. They can schedule it as a pre-order. Submitting opens a timed bid window straight away.',
+    bullets: ['Food orders and other orders each have their own bid window, set in Admin › Settings.', 'Vendors in reach of the building and all admins get a "new order" notification.'],
+    trans: [null, 'bidding'], api: 'POST /api/v1/orders/create.php',
+    shots: [['12-customer-create-order', 'New order', '/customer/order'], ['13-customer-my-orders', 'My orders', '/customer/orders']] },
+
+  { role: 'vendor', title: 'Vendors bid a price',
+    desc: 'Open requests appear on the vendor\'s Orders tab with a live countdown. The vendor enters one price for all items, an optional note, and confirms the items are in stock. Bids are only accepted while the window is open.',
+    bullets: ['The delivery fee is added on top by the platform. Vendors quote the item price only.', 'The empty state shown here appears once the demo order\'s window has closed.'],
+    api: 'POST /api/v1/bids/submit.php',
+    shots: [['20-vendor-open-requests', 'Open bids', '/vendor/orders'], ['21-vendor-submit-bid', 'Submit bid', '/vendor/orders']] },
+
+  { role: 'admin', title: 'Admin reviews bids and forwards the best one',
+    desc: 'On the Orders board, admin opens Review bids for the order. The lowest quote is highlighted. Forwarding a bid sets the vendor, the item price and the total (item + delivery fee), then sends the price to the customer.',
+    trans: ['bidding', 'sent_to_customer'], api: 'POST /api/v1/admin/forward-bid.php', desktop: true,
+    shots: [['31-admin-orders', 'Orders board', '/admin/orders'], ['32-admin-forward-bid', 'Review bids', '/admin/orders']] },
+
+  { role: 'customer', title: 'Customer compares prices and confirms a shop',
+    desc: 'The tracking screen shows "Prices are ready". The customer can keep the forwarded quote or tap another shop\'s quote under Compare prices, then confirms the selected shop.',
+    trans: ['sent_to_customer', 'awaiting_payment'], api: 'POST /api/v1/orders/select-bid.php',
+    shots: [['14-customer-track-offer', 'Choose a shop', '/customer/track/4'], ['15-customer-track-awaiting-payment', 'Accept price & pay', '/customer/track/3']] },
+
+  { role: 'customer', title: 'Pay and upload proof',
+    desc: 'The payment sheet shows the platform\'s bank (CBE) and Telebirr details. The customer pays outside the app, then uploads a screenshot. The app tries to read the transaction ID from the receipt. The customer can also type it in, with the sender name.',
+    trans: ['awaiting_payment', 'payment_under_review'], api: 'POST /api/v1/orders/upload-payment.php',
+    shots: [['16-customer-payment-upload', 'Upload payment proof', '/customer/track/3']] },
+
+  { role: 'admin', title: 'Admin verifies the payment',
+    desc: 'Verify payment shows the method, amount, transaction ID, sender and screenshot, with a breakdown of what goes to the vendor, the delivery fee, and what the platform keeps. Approve confirms the order. Reject marks the payment as failed.',
+    trans: ['payment_under_review', 'confirmed'], api: 'POST /api/v1/admin/verify-payment.php', desktop: true,
+    shots: [['30-admin-dashboard', 'Overview: payment queue', '/admin'], ['33-admin-verify-payment', 'Verify payment', '/admin/orders']] },
+
+  { role: 'admin', title: 'Admin pays the vendor',
+    desc: 'Operations transfers the item price to the shop and records the payment reference and amount sent.',
+    trans: ['confirmed', 'vendor_paid'], api: 'POST /api/v1/admin/order-actions.php', desktop: true,
+    shots: [['34-admin-vendor-paid', 'Mark vendor paid', '/admin/orders']] },
+
+  { role: 'admin', title: 'Admin assigns a rider',
+    desc: 'Assign a rider lists riders who cover the building, with their credit balance. Assigning takes 1 credit from the rider and notifies them.',
+    trans: ['vendor_paid', 'assigned'], api: 'POST /api/v1/admin/assign.php', desktop: true,
+    shots: [['35-admin-assign-rider', 'Assign a rider', '/admin/orders']] },
+
+  { role: 'vendor', title: 'Vendor approves pickup',
+    desc: 'Under My orders the vendor sees the orders they won, with their payment and delivery status. When the items are packed, they tap Approve pickup – items ready so the rider can collect.',
+    api: 'POST /api/v1/vendor/approve-pickup.php',
+    shots: [['22-vendor-won-orders', 'My orders (won)', '/vendor/orders']] },
+
+  { role: 'rider', title: 'Rider picks up and delivers',
+    desc: 'The rider\'s task card shows where to pick up and where to deliver, and the amount to collect if payment is on delivery. Task detail lists the items and the customer\'s note. One button moves the order forward each time.',
+    bullets: ['Mark picked up → Mark out for delivery → Mark delivered.', 'The customer gets a notification at each stage.'],
+    trans: ['assigned', 'delivered'], api: 'POST /api/v1/delivery/update.php',
+    shots: [['50-rider-tasks', 'My deliveries', '/delivery/tasks'], ['51-rider-task-assigned', 'Task: assigned', '/delivery/task/9'], ['52-rider-task-out-for-delivery', 'Task: on the way', '/delivery/task/5']] },
+
+  { role: 'customer', title: 'Customer tracks and confirms receipt',
+    desc: 'The tracking screen refreshes every 4 seconds and shows the progress bar (Order placed → Price & payment → Confirmed → On the way → Delivered) with the order summary. Once the order is delivered, the customer confirms receipt and the order is completed.',
+    trans: ['delivered', 'completed'], api: 'POST /api/v1/delivery/confirm.php',
+    shots: [['17-customer-track-out-for-delivery', 'On the way', '/customer/track/5'], ['18-customer-track-completed', 'Completed', '/customer/track/1'], ['19-customer-notifications', 'Notifications', '/notifications']] },
+];
+
+const ONBOARDING = [
+  ['02-register-customer', 'Join as a customer', '/register/customer'],
+  ['03-register-vendor', 'Join as a vendor', '/register/vendor'],
+  ['04-register-delivery', 'Join as a rider', '/register/delivery'],
+];
+
+const GALLERY = [
+  { role: 'vendor', title: 'Vendor', shots: [['23-vendor-history', 'Bid history', '/vendor/history']] },
+  { role: 'rider', title: 'Rider', shots: [['53-rider-credits', 'My credits', '/delivery/credits'], ['54-rider-earnings', 'My earnings', '/delivery/earnings'], ['55-rider-profile', 'Profile & settings', '/profile']] },
+  { role: 'admin', title: 'Admin console', desktop: true, shots: [
+    ['36-admin-users', 'People', '/admin/users'],
+    ['37-admin-credit-packages', 'Credit packages', '/admin/credit-packages'],
+    ['38-admin-financial-report', 'Financial report', '/admin/financial-report'],
+    ['39-admin-buildings', 'Buildings', '/admin/buildings'],
+    ['40-admin-settings', 'Platform settings', '/admin/settings'],
+  ] },
+];
+
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const allShots = [];
+
+function frame([file, label, route], desktop) {
+  const idx = allShots.push({ src: `screenshot/${file}.png`, label }) - 1;
+  const img = `<img src="screenshot/${file}.png" alt="${esc(label)}" decoding="async">`;
+  const inner = desktop ? `<div class="browser" data-i="${idx}"><div class="bar"><i></i><i></i><i></i></div>${img}</div>`
+                        : `<div class="phone" data-i="${idx}">${img}</div>`;
+  return `<figure>${inner}<figcaption>${esc(label)}<small>${esc(route)}</small></figcaption></figure>`;
+}
+
+function badge(role) { return `<span class="badge b-${role}">${ROLE[role].label}</span>`; }
+
+// Lifecycle strip
+document.getElementById('lc-row').innerHTML = LIFECYCLE.map((s, i) =>
+  `<a class="lc-step" href="#step-${s.step}" style="border-top:3px solid ${ROLE[s.role].color}">
+     <span class="st">${s.st}</span>
+     <span style="font-size:11px;color:var(--ink-3)">${ROLE[s.role].label} · step ${s.step}</span>
+   </a>${i < LIFECYCLE.length - 1 ? '<span class="lc-arrow" aria-hidden="true">→</span>' : ''}`).join('');
+
+// Journey steps
+document.getElementById('steps').innerHTML = STEPS.map((s, i) => {
+  const n = i + 1;
+  const trans = s.trans ? `<span class="trans">${s.trans[0] ? `<span class="status">${s.trans[0]}</span> →` : 'creates'} <span class="status">${s.trans[1]}</span></span>` : '';
+  const api = s.api ? `<code>${esc(s.api)}</code>` : '';
+  const bullets = s.bullets ? `<ul>${s.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` : '';
+  const cls = s.desktop ? (s.shots.length > 1 ? 'shots desktop-2' : 'shots') : 'shots';
+  return `<article class="step" id="step-${n}" data-role="${s.role}">
+    <div class="rail"><div class="num" style="background:${ROLE[s.role].color}">${n}</div></div>
+    <div class="card">
+      <div class="card-head">${badge(s.role)}<h3>${esc(s.title)}</h3></div>
+      <p class="desc">${esc(s.desc)}</p>
+      ${bullets}
+      ${trans || api ? `<div class="meta">${trans}${api}</div>` : ''}
+      <div class="${cls}">${s.shots.map(sh => frame(sh, s.desktop)).join('')}</div>
+    </div>
+  </article>`;
+}).join('');
+
+document.getElementById('onboarding-grid').innerHTML = ONBOARDING.map(sh => frame(sh, false)).join('');
+
+document.getElementById('gallery').innerHTML = GALLERY.map(g =>
+  `<div class="gallery-group"><h3>${badge(g.role)}${esc(g.title)}</h3>
+     <div class="${g.desktop ? 'grid-desk' : 'grid-phones'}">${g.shots.map(sh => frame(sh, g.desktop)).join('')}</div>
+   </div>`).join('');
+
+// Role filter
+document.querySelectorAll('.filters button').forEach(btn => btn.addEventListener('click', () => {
+  const f = btn.dataset.filter;
+  document.querySelectorAll('.filters button').forEach(b => b.setAttribute('aria-pressed', b === btn));
+  document.querySelectorAll('.step').forEach(el => {
+    el.hidden = !(f === 'all' || el.dataset.role === f || el.dataset.role === 'all');
+  });
+}));
+
+// Lightbox
+const lb = document.getElementById('lb'), lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.cap');
+let cur = 0;
+function show(i) { cur = (i + allShots.length) % allShots.length; lbImg.src = allShots[cur].src; lbImg.alt = allShots[cur].label; lbCap.textContent = allShots[cur].label; }
+document.addEventListener('click', e => {
+  const f = e.target.closest('[data-i]');
+  if (f) { show(+f.dataset.i); lb.classList.add('open'); }
+});
+lb.querySelector('.close').onclick = () => lb.classList.remove('open');
+lb.querySelector('.prev').onclick = () => show(cur - 1);
+lb.querySelector('.next').onclick = () => show(cur + 1);
+lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') lb.classList.remove('open');
+  if (e.key === 'ArrowLeft') show(cur - 1);
+  if (e.key === 'ArrowRight') show(cur + 1);
+});
+
+// Theme toggle
+const themeBtn = document.getElementById('theme-btn');
+try { const t = localStorage.getItem('lakun-flow-theme'); if (t) document.documentElement.dataset.theme = t; } catch {}
+themeBtn.onclick = () => {
+  const dark = document.documentElement.dataset.theme
+    ? document.documentElement.dataset.theme === 'dark'
+    : matchMedia('(prefers-color-scheme: dark)').matches;
+  const next = dark ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('lakun-flow-theme', next); } catch {}
+};
+</script>
+</body>
+</html>

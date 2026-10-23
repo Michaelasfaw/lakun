@@ -1,0 +1,177 @@
+[
+  {
+    "name": "01-login",
+    "ok": true,
+    "url": "/login"
+  },
+  {
+    "name": "02-register-customer",
+    "ok": true,
+    "url": "/register/customer"
+  },
+  {
+    "name": "03-register-vendor",
+    "ok": true,
+    "url": "/register/vendor"
+  },
+  {
+    "name": "04-register-delivery",
+    "ok": true,
+    "url": "/register/delivery"
+  },
+  {
+    "name": "10-customer-dashboard",
+    "ok": true,
+    "url": "/customer/dashboard"
+  },
+  {
+    "name": "11-customer-nearby-shops",
+    "ok": true,
+    "url": "/customer/nearby"
+  },
+  {
+    "name": "12-customer-create-order",
+    "ok": true,
+    "url": "/customer/order"
+  },
+  {
+    "name": "13-customer-my-orders",
+    "ok": true,
+    "url": "/customer/orders"
+  },
+  {
+    "name": "14-customer-track-offer",
+    "ok": true,
+    "url": "/customer/track/4"
+  },
+  {
+    "name": "15-customer-track-awaiting-payment",
+    "ok": true,
+    "url": "/customer/track/3"
+  },
+  {
+    "name": "16-customer-payment-upload",
+    "ok": true,
+    "url": "/customer/track/3"
+  },
+  {
+    "name": "17-customer-track-out-for-delivery",
+    "ok": true,
+    "url": "/customer/track/5"
+  },
+  {
+    "name": "18-customer-track-completed",
+    "ok": true,
+    "url": "/customer/track/1"
+  },
+  {
+    "name": "19-customer-notifications",
+    "ok": true,
+    "url": "/notifications"
+  },
+  {
+    "name": "20-vendor-open-requests",
+    "ok": true,
+    "url": "/vendor/orders"
+  },
+  {
+    "name": "21-vendor-submit-bid",
+    "ok": true,
+    "url": "/vendor/orders"
+  },
+  {
+    "name": "22-vendor-won-orders",
+    "ok": true,
+    "url": "/vendor/orders"
+  },
+  {
+    "name": "23-vendor-history",
+    "ok": true,
+    "url": "/vendor/history"
+  },
+  {
+    "name": "30-admin-dashboard",
+    "ok": true,
+    "url": "/admin"
+  },
+  {
+    "name": "31-admin-orders",
+    "ok": true,
+    "url": "/admin/orders"
+  },
+  {
+    "name": "32-admin-forward-bid",
+    "ok": true,
+    "url": "/admin/orders"
+  },
+  {
+    "name": "33-admin-verify-payment",
+    "ok": true,
+    "url": "/admin/orders"
+  },
+  {
+    "name": "34-admin-vendor-paid",
+    "ok": true,
+    "url": "/admin/orders"
+  },
+  {
+    "name": "35-admin-assign-rider",
+    "ok": true,
+    "url": "/admin/orders"
+  },
+  {
+    "name": "36-admin-users",
+    "ok": true,
+    "url": "/admin/users"
+  },
+  {
+    "name": "37-admin-credit-packages",
+    "ok": true,
+    "url": "/admin/credit-packages"
+  },
+  {
+    "name": "38-admin-financial-report",
+    "ok": true,
+    "url": "/admin/financial-report"
+  },
+  {
+    "name": "39-admin-buildings",
+    "ok": true,
+    "url": "/admin/buildings"
+  },
+  {
+    "name": "40-admin-settings",
+    "ok": true,
+    "url": "/admin/settings"
+  },
+  {
+    "name": "50-rider-tasks",
+    "ok": true,
+    "url": "/delivery/tasks"
+  },
+  {
+    "name": "51-rider-task-assigned",
+    "ok": true,
+    "url": "/delivery/task/9"
+  },
+  {
+    "name": "52-rider-task-out-for-delivery",
+    "ok": true,
+    "url": "/delivery/task/5"
+  },
+  {
+    "name": "53-rider-credits",
+    "ok": true,
+    "url": "/delivery/credits"
+  },
+  {
+    "name": "54-rider-earnings",
+    "ok": true,
+    "url": "/delivery/earnings"
+  },
+  {
+    "name": "55-rider-profile",
+    "ok": true,
+    "url": "/profile"
+  }
+]
